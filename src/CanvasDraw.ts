@@ -14,9 +14,9 @@ export class CanvasDraw {
 	private durationDrawMainTriangle: number = 1000;
 	private intervalResize: number = 100;
 	private peaksTriangleRelative: PeakTriangle[] = [
-		{ x: 0.1, y: 0.1 },
-		{ x: 0.1, y: 0.5 },
-		{ x: 0.5, y: 0.5 }
+		{ x: 0.5, y: 0.2 },
+		{ x: 0.2, y: 0.8 },
+		{ x: 0.8, y: 0.8 }
 	];
 	private peaksTriange: PeakTriangle[] = [];
 	private countDraw: number = 0;
@@ -46,13 +46,83 @@ export class CanvasDraw {
 			switchMap(() =>
 				this.drawMainTriangle(this.durationDrawMainTriangle, this.intervaleTimeMainTriangle),
 			),
+			take(1),
 			tap(() => {
 				this.drawPoints();
-			}),
-			take(1)
+			})
 		)
 		.subscribe();
 	}
+
+	private generateRandomPosPointInTriangle(): PeakTriangle {
+
+		const peaks = this.peaksTriange;
+		const a = peaks[0];
+		const b = peaks[1];
+		const c = peaks[2];
+
+		// console.log(a.x, 'ax', a.y, 'ay');
+		// console.log(b.x, 'bx', b.y, 'by');
+		// console.log(c.x, 'cx', c.y, 'cy');
+		// console.log('');
+
+
+		// Первый вариант
+		let u = Math.random();
+		let v = Math.random();
+
+		if (u + v > 1)  {
+			u = 1 - u;
+			v = 1 - v;
+		}
+
+		const random1 = {
+			x: a.x + (b.x - a.x) * u + (c.x - a.x) * v,
+			y: a.y + (b.y - a.y) * u + (c.y - a.y) * v
+		};
+		// const x = a.x + (b.x - a.x) * u + (c.x - a.x) * v;
+		// const y = a.y + (b.y - a.y) * u + (c.y - a.y) * v;
+
+		// console.log('Первый вариант');
+		// console.log(u, 'u');
+		// console.log(v, 'v');
+
+		// console.log(random1, 'random1');
+
+
+
+		// второй вариант
+		const p = Math.sqrt(Math.random());
+		const q = Math.random();
+		// let x = a.x * (1 - p) + b.x * (1 - q) * p + c.x * p * q;
+		// let y = a.y * (1 - p) + b.y * (1 - q) * p + c.y * p * q;
+		const random2 = {
+			x: a.x * (1 - p) + b.x * (1 - q) * p + c.x * p * q,
+			y: a.y * (1 - p) + b.y * (1 - q) * p + c.y * p * q
+		}
+
+		// console.log('');
+
+		// console.log('Второй вариант, рисую его');
+		// console.log(p, 'p');
+		// console.log(q, 'q');
+
+
+		// console.log(random2, 'random2');
+
+		// console.log('');
+
+
+		return random2;
+	}
+
+	private drawRandomPoint(rndPoint = this.generateRandomPosPointInTriangle()): void {
+		this.ctx.beginPath();
+		this.ctx.fillStyle = this.color;
+		this.ctx.arc(rndPoint.x, rndPoint.y, 1, 0, 2 * Math.PI);
+		this.ctx.fill();
+		this.ctx.closePath();
+	};
 
 	// Нужно нарисовать точки, тут нужно возвращать Observable, но не точно
 	private drawPoints() {
@@ -62,76 +132,64 @@ export class CanvasDraw {
 		const b = peaks[1];
 		const c = peaks[2];
 
-		const generateRandomPosPointInTriangle = (): PeakTriangle => {
+		const rndPoint = this.generateRandomPosPointInTriangle();
+		// this.drawRandomPoint(rndPoint);
 
-			console.log(a.x, 'ax', a.y, 'ay');
-			console.log(b.x, 'bx', b.y, 'by');
-			console.log(c.x, 'cx', c.y, 'cy');
-			console.log('');
+		let lastPoint = rndPoint;
+		// console.log(this.peaksTriange, 'peaksTriangle');
 
+		// console.log(lastPoint, 'lastPoint');
 
-			// Первый вариант
-			let u = Math.random();
-			let v = Math.random();
+		// const rndPeakId = Math.floor(Math.random() * peaks.length);
+		// const rndPeak = peaks[rndPeakId];
+		// const newPoint = {
+		// 	x: this.createCoord(lastPoint.x, rndPeak.x, 0.5),
+		// 	y: this.createCoord(lastPoint.y, rndPeak.y, 0.5)
+		// };
 
-			if (u + v > 1)  {
-				u = 1 - u;
-				v = 1 - v;
+		// this.animateLine({
+		// 	startX: lastPoint.x,
+		// 	startY: lastPoint.y,
+		// 	endX: newPoint.x,
+		// 	endY: newPoint.y,
+		// 	durationTime: 200,
+		// 	intervalTime: 0
+		// }).subscribe();
+
+		this.countDraw = this.countDraw + 1;
+		const currentCountDraw = this.countDraw;
+
+		tween(20000)
+		.pipe(
+			takeWhile(item => this.countDraw === currentCountDraw),
+		)
+		.subscribe(({duration}) => {
+			// lastPoint = printPointTriangle(lastPoint);
+			for (let i = 0; i < 10; i++) {
+				lastPoint = printPointTriangle(lastPoint);
 			}
+		});
 
-			const random1 = {
-				x: a.x + (b.x - a.x) * u + (c.x - a.x) * v,
-				y: a.y + (b.y - a.y) * u + (c.y - a.y) * v
+		const printPointTriangle = (lastPoint) => {
+			const rndPeakId = Math.floor(Math.random() * peaks.length);
+			const rndPeak = peaks[rndPeakId];
+			const newPoint = {
+				x: this.createCoord(lastPoint.x, rndPeak.x, 0.5),
+				y: this.createCoord(lastPoint.y, rndPeak.y, 0.5)
 			};
-			// const x = a.x + (b.x - a.x) * u + (c.x - a.x) * v;
-			// const y = a.y + (b.y - a.y) * u + (c.y - a.y) * v;
-
-			console.log('Первый вариант');
-			console.log(u, 'u');
-			console.log(v, 'v');
-
-			console.log(random1, 'random1');
-
-
-
-			// второй вариант
-			const p = Math.sqrt(Math.random());
-			const q = Math.random();
-			// let x = a.x * (1 - p) + b.x * (1 - q) * p + c.x * p * q;
-			// let y = a.y * (1 - p) + b.y * (1 - q) * p + c.y * p * q;
-			const random2 = {
-				x: a.x * (1 - p) + b.x * (1 - q) * p + c.x * p * q,
-				y: a.y * (1 - p) + b.y * (1 - q) * p + c.y * p * q
-			}
-
-			console.log('');
-
-			console.log('Второй вариант, рисую его');
-			console.log(p, 'p');
-			console.log(q, 'q');
-
-
-			console.log(random2, 'random2');
-
-			console.log('');
-
-
-			return random2;
+			this.drawRandomPoint(newPoint);
+			return newPoint;
 		};
 
+		// for (let i = 0; i < 10000; i++) {
+		// 	const newPoint = printPointTriangle(lastPoint);
+		// }
 
-		const drawRandomPoint = () => {
-			const rndPoint = generateRandomPosPointInTriangle();
 
-			this.ctx.beginPath();
-			this.ctx.fillStyle = this.color;
-			this.ctx.arc(rndPoint.x, rndPoint.y * 0.5, 10, 0, 2 * Math.PI);
-			this.ctx.fill();
-			this.ctx.closePath();
-
-		};
-
-		drawRandomPoint();
+		// console.log(rndPeak, 'rndPeak');
+		// for (let i = 0; i < 5000; i++) {
+		// 	drawRandomPoint();
+		// }
 
 		return tween(1000)
 	}
@@ -246,19 +304,19 @@ export class CanvasDraw {
 		this.draw();
 	}
 
-	private animateLine({startY, endY, startX, endX, durationTime, intervalTime}: animateLineObj): Observable<TweenObj> {
+	private createCoord(startCoord: number, endCoord: number, duration: number): number {
+		let coord: number;
 
-		const createCoord = (startCoord: number, endCoord: number, duration: number) => {
-			let coord: number;
-
-			if (endCoord > startCoord) {
-				coord = startCoord + (endCoord - startCoord) * duration;
-			} else {
-				coord = endCoord + (startCoord - endCoord) * (1 - duration);
-			}
-
-			return coord;
+		if (endCoord > startCoord) {
+			coord = startCoord + (endCoord - startCoord) * duration;
+		} else {
+			coord = endCoord + (startCoord - endCoord) * (1 - duration);
 		}
+
+		return coord;
+	}
+
+	private animateLine({startY, endY, startX, endX, durationTime, intervalTime}: animateLineObj): Observable<TweenObj> {
 
 		const currentCountDraw = this.countDraw;
 
@@ -274,10 +332,10 @@ export class CanvasDraw {
 				}
 			}),
 			tap(({duration, lastDuration}) => {
-				const x = createCoord(startX, endX, duration);
-				const lastX = createCoord(startX, endX, lastDuration);
-				const y = createCoord(startY, endY, duration);
-				const lastY = createCoord(startY, endY, lastDuration);
+				const x = this.createCoord(startX, endX, duration);
+				const lastX = this.createCoord(startX, endX, lastDuration);
+				const y = this.createCoord(startY, endY, duration);
+				const lastY = this.createCoord(startY, endY, lastDuration);
 
 				this.ctx.moveTo(lastX, lastY);
 				this.ctx.lineTo(x, y);
