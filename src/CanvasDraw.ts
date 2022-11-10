@@ -63,6 +63,13 @@ export class CanvasDraw {
 		const c = peaks[2];
 
 		const generateRandomPosPointInTriangle = (): PeakTriangle => {
+
+			console.log(a.x, 'ax', a.y, 'ay');
+			console.log(b.x, 'bx', b.y, 'by');
+			console.log(c.x, 'cx', c.y, 'cy');
+			console.log('');
+
+
 			// Первый вариант
 			let u = Math.random();
 			let v = Math.random();
@@ -72,30 +79,44 @@ export class CanvasDraw {
 				v = 1 - v;
 			}
 
-			const x = a.x + (b.x - a.x) * u + (c.x - a.x) * v;
-			const y = a.y + (b.y - a.y) * u + (c.y - a.y) * v;
+			const random1 = {
+				x: a.x + (b.x - a.x) * u + (c.x - a.x) * v,
+				y: a.y + (b.y - a.y) * u + (c.y - a.y) * v
+			};
+			// const x = a.x + (b.x - a.x) * u + (c.x - a.x) * v;
+			// const y = a.y + (b.y - a.y) * u + (c.y - a.y) * v;
 
-			console.log(peaks, 'trianglePeaks');
-			console.log(a.x, 'ax', a.y, 'ay');
-			console.log(b.x, 'bx', b.y, 'by');
-			console.log(c.x, 'cx', c.y, 'cy');
-			console.log({x,y}, 'randomPoint');
+			console.log('Первый вариант');
+			console.log(u, 'u');
+			console.log(v, 'v');
+
+			console.log(random1, 'random1');
 
 
+
+			// второй вариант
+			const p = Math.sqrt(Math.random());
+			const q = Math.random();
+			// let x = a.x * (1 - p) + b.x * (1 - q) * p + c.x * p * q;
+			// let y = a.y * (1 - p) + b.y * (1 - q) * p + c.y * p * q;
+			const random2 = {
+				x: a.x * (1 - p) + b.x * (1 - q) * p + c.x * p * q,
+				y: a.y * (1 - p) + b.y * (1 - q) * p + c.y * p * q
+			}
+
+			console.log('');
+
+			console.log('Второй вариант');
+			console.log(p, 'p');
+			console.log(q, 'q');
+
+
+			console.log(random2, 'random2');
 
 			console.log('');
 
 
-			// второй вариант
-			// const p = Math.sqrt(Math.random());
-			// const q = Math.random();
-			// let x = a.x * (1 - p) + b.x * (1 - q) * p + c.x * p * q;
-			// let y = a.y * (1 - p) + b.y * (1 - q) * p + c.y * p * q;
-
-			// x = this.width - x;
-			// y = this.height - y;
-
-			return { x, y };
+			return random2;
 		};
 
 
