@@ -1,0 +1,2 @@
+*,:before,:after{box-sizing:inherit}html{box-sizing:border-box}:root{--bgColor:white;--color:#222}@media (prefers-color-scheme:dark){:root{--bgColor:#222;--color:white}}body{color:var(--color);background-color:var(--bgColor);height:100vh;place-content:center;margin:0;display:grid}.canvas{height:90vmin;width:90vmin;border:2px solid var(--color);max-width:1500px;max-height:1000px;cursor:pointer;display:block}
+/*# sourceMappingURL=index.ec3952f3.css.map */
