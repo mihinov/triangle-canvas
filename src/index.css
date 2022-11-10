@@ -29,8 +29,8 @@ body {
 
 .canvas {
 	display: block;
-	height: 70vh;
-	width: 70vw;
+	height: 90vmin;
+	width: 90vmin;
 	border: 2px solid var(--color);
 	max-width: 1500px;
 	max-height: 1000px;
