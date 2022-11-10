@@ -106,7 +106,7 @@ export class CanvasDraw {
 
 			console.log('');
 
-			console.log('Второй вариант');
+			console.log('Второй вариант, рисую его');
 			console.log(p, 'p');
 			console.log(q, 'q');
 
