@@ -165,7 +165,7 @@ export class CanvasDraw {
 		)
 		.subscribe(({duration}) => {
 			// lastPoint = printPointTriangle(lastPoint);
-			for (let i = 0; i < 10; i++) {
+			for (let i = 0; i < 20; i++) {
 				lastPoint = printPointTriangle(lastPoint);
 			}
 		});
