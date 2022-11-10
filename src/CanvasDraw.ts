@@ -97,7 +97,7 @@ export class CanvasDraw {
 
 
 			this.ctx.beginPath();
-			this.ctx.fillStyle = 'white';
+			this.ctx.fillStyle = this.color;
 			this.ctx.arc(rndPoint.x, rndPoint.y * 0.5, 10, 0, 2 * Math.PI);
 			this.ctx.fill();
 			this.ctx.closePath();
