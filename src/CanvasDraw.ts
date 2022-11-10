@@ -14,9 +14,9 @@ export class CanvasDraw {
 	private durationDrawMainTriangle: number = 1000;
 	private intervalResize: number = 100;
 	private peaksTriangleRelative: PeakTriangle[] = [
-		{ x: 0.5, y: 0.2 },
-		{ x: 0.2, y: 0.8 },
-		{ x: 0.8, y: 0.8 }
+		{ x: 0.1, y: 0.1 },
+		{ x: 0.1, y: 0.5 },
+		{ x: 0.5, y: 0.5 }
 	];
 	private peaksTriange: PeakTriangle[] = [];
 	private countDraw: number = 0;
@@ -64,22 +64,33 @@ export class CanvasDraw {
 
 		const generateRandomPosPointInTriangle = (): PeakTriangle => {
 			// Первый вариант
-			// let u = Math.random();
-			// let v = Math.random();
+			let u = Math.random();
+			let v = Math.random();
 
-			// if (u + v > 1)  {
-			// 	u = 1 - u;
-			// 	v = 1 - v;
-			// }
+			if (u + v > 1)  {
+				u = 1 - u;
+				v = 1 - v;
+			}
 
-			// const x = a.x + (b.x - a.x) * u + (c.x - a.x) * v;
-			// const y = a.y + (b.y - a.y) * u + (c.y - a.y) * v;
+			const x = a.x + (b.x - a.x) * u + (c.x - a.x) * v;
+			const y = a.y + (b.y - a.y) * u + (c.y - a.y) * v;
+
+			console.log(peaks, 'trianglePeaks');
+			console.log(a.x, 'ax', a.y, 'ay');
+			console.log(b.x, 'bx', b.y, 'by');
+			console.log(c.x, 'cx', c.y, 'cy');
+			console.log({x,y}, 'randomPoint');
+
+
+
+			console.log('');
+
 
 			// второй вариант
-			const p = Math.sqrt(Math.random());
-			const q = Math.random();
-			let x = a.x * (1 - p) + b.x * (1 - q) * p + c.x * p * q;
-			let y = a.y * (1 - p) + b.y * (1 - q) * p + c.y * p * q;
+			// const p = Math.sqrt(Math.random());
+			// const q = Math.random();
+			// let x = a.x * (1 - p) + b.x * (1 - q) * p + c.x * p * q;
+			// let y = a.y * (1 - p) + b.y * (1 - q) * p + c.y * p * q;
 
 			// x = this.width - x;
 			// y = this.height - y;
@@ -90,11 +101,6 @@ export class CanvasDraw {
 
 		const drawRandomPoint = () => {
 			const rndPoint = generateRandomPosPointInTriangle();
-
-			console.log(peaks, 'trianglePeaks');
-			console.log(rndPoint, 'randomPoint');
-			console.log('');
-
 
 			this.ctx.beginPath();
 			this.ctx.fillStyle = this.color;
