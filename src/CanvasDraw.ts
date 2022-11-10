@@ -166,6 +166,7 @@ export class CanvasDraw {
 
 		matchMediaDark.addEventListener('change', this.matchMediaDarkListener);
 		window.addEventListener('resize', debounce(this.resizeEvent, this.intervalResize));
+		this.canvasNode.addEventListener('click', this.draw.bind(this));
 	}
 
 	private initVars(): void {
