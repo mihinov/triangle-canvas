@@ -78,8 +78,11 @@ export class CanvasDraw {
 			// второй вариант
 			const p = Math.sqrt(Math.random());
 			const q = Math.random();
-			const x = a.x * (1 - p) + b.x * (1 - q) * p + c.x * p * q;
-			const y = a.y * (1 - p) + b.y * (1 - q) * p + c.y * p * q;
+			let x = a.x * (1 - p) + b.x * (1 - q) * p + c.x * p * q;
+			let y = a.y * (1 - p) + b.y * (1 - q) * p + c.y * p * q;
+
+			// x = this.width - x;
+			// y = this.height - y;
 
 			return { x, y };
 		};
@@ -90,6 +93,8 @@ export class CanvasDraw {
 
 			console.log(peaks, 'trianglePeaks');
 			console.log(rndPoint, 'randomPoint');
+			console.log('');
+
 
 			this.ctx.beginPath();
 			this.ctx.fillStyle = 'white';
