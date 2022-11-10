@@ -14,9 +14,9 @@ export class CanvasDraw {
 	private durationDrawMainTriangle: number = 1000;
 	private intervalResize: number = 100;
 	private peaksTriangleRelative: PeakTriangle[] = [
-		{ x: 0.5, y: 0.2 },
-		{ x: 0.2, y: 0.8 },
-		{ x: 0.8, y: 0.8 }
+		{ x: 0.5, y: 0.05 },
+		{ x: 0.05, y: 0.95 },
+		{ x: 0.95, y: 0.95 }
 	];
 	private peaksTriange: PeakTriangle[] = [];
 	private countDraw: number = 0;
