@@ -1,0 +1,2 @@
+*,:before,:after{box-sizing:inherit}html{box-sizing:border-box}:root{--bgColor:white;--color:#222}@media (prefers-color-scheme:dark){:root{--bgColor:#222;--color:white}}body{color:var(--color);background-color:var(--bgColor);place-content:center;height:100vh;margin:0;display:grid}.canvas{border:2px solid var(--color);cursor:pointer;width:90vmin;max-width:1500px;height:90vmin;max-height:1000px;display:block}
+/*# sourceMappingURL=triangle-canvas.5e072aaa.css.map */
